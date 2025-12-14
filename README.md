@@ -250,6 +250,192 @@ dotnet run
 
 ---
 
+### Установка на Windows
+
+#### 1. Установка .NET 8 SDK
+
+1. Перейдите на официальный сайт: https://dotnet.microsoft.com/download/dotnet/8.0
+2. Скачайте установщик **".NET 8.0 SDK"** для Windows
+3. Запустите установщик и следуйте инструкциям
+4. После установки откройте **PowerShell** или **Command Prompt** и проверьте установку:
+
+```powershell
+dotnet --version
+```
+
+#### 2. Установка PostgreSQL
+
+**Вариант A: Установка через официальный инсталлятор**
+
+1. Скачайте PostgreSQL с официального сайта: https://www.postgresql.org/download/windows/
+2. Запустите установщик (рекомендуется версия 12 или выше)
+3. Во время установки:
+   - Запомните пароль для пользователя `postgres`
+   - Оставьте порт по умолчанию (5432)
+   - Установите pgAdmin 4 (опционально, для удобного управления БД)
+4. После установки откройте **SQL Shell (psql)** или **pgAdmin 4**
+
+**Через SQL Shell (psql):**
+
+```sql
+-- Войдите как пользователь postgres (введите пароль при запросе)
+-- Создайте базу данных и пользователя
+CREATE DATABASE blackjack_db;
+CREATE USER blackjack_user WITH ENCRYPTED PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE blackjack_db TO blackjack_user;
+\q
+```
+
+**Вариант B: Установка через Chocolatey (если используете)**
+
+Откройте PowerShell от имени администратора:
+
+```powershell
+# Установка PostgreSQL
+choco install postgresql
+
+# Запуск службы PostgreSQL
+Start-Service postgresql-x64-14
+
+# Создание базы данных
+psql -U postgres
+# Затем выполните SQL команды выше
+```
+
+#### 3. Установка Git (если еще не установлен)
+
+1. Скачайте Git с https://git-scm.com/download/win
+2. Запустите установщик и следуйте инструкциям
+3. Проверьте установку:
+
+```powershell
+git --version
+```
+
+#### 4. Клонирование и настройка проекта
+
+Откройте **PowerShell** или **Command Prompt**:
+
+```powershell
+# Клонирование репозитория
+git clone https://github.com/ZINA312/Multiplayer-Blackjack-Blazor.git
+cd Multiplayer-Blackjack-Blazor
+
+# Откройте файл конфигурации в блокноте или любом редакторе
+notepad BlackJack.API\appsettings.json
+```
+
+Обновите строку подключения в файле:
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Database=blackjack_db;Username=blackjack_user;Password=your_secure_password"
+}
+```
+
+Сохраните и закройте файл.
+
+#### 5. Применение миграций и запуск
+
+```powershell
+# Восстановление зависимостей
+dotnet restore
+
+# Установка Entity Framework инструментов (если требуется)
+dotnet tool install --global dotnet-ef
+
+# Добавьте инструменты в PATH (если нужно)
+# Путь может отличаться, обычно: C:\Users\YourUsername\.dotnet\tools
+
+# Применение миграций базы данных
+cd BlackJack.API
+dotnet ef database update
+cd ..
+```
+
+#### 6. Запуск приложения
+
+**Вариант A: Запуск в двух отдельных окнах PowerShell**
+
+Окно 1 (Backend):
+```powershell
+cd BlackJack.API
+dotnet run --urls "http://localhost:5052;https://localhost:7052"
+```
+
+Окно 2 (Frontend):
+```powershell
+cd BlackJack.BlazorWasm
+dotnet run
+```
+
+**Вариант B: Запуск через Visual Studio 2022**
+
+1. Установите **Visual Studio 2022** (Community Edition бесплатна)
+2. Выберите рабочую нагрузку **"ASP.NET and web development"**
+3. Откройте файл `BlackJack.sln`
+4. Настройте множественные запускаемые проекты:
+   - ПКМ на Solution → Properties
+   - Startup Project → Multiple startup projects
+   - Установите Action для `BlackJack.API` и `BlackJack.BlazorWasm` в **Start**
+5. Нажмите **F5** или кнопку **Start**
+
+**Вариант C: Запуск через VS Code**
+
+1. Установите **Visual Studio Code**: https://code.visualstudio.com/
+2. Установите расширения:
+   - C# Dev Kit
+   - C#
+3. Откройте папку проекта в VS Code
+4. Используйте встроенный терминал для запуска команд выше
+
+#### 7. Настройка Windows Firewall (если требуется)
+
+Если другие устройства в сети не могут подключиться:
+
+```powershell
+# Запустите PowerShell от имени администратора
+
+# Разрешить входящие соединения для портов
+New-NetFirewallRule -DisplayName "BlackJack API HTTP" -Direction Inbound -LocalPort 5052 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "BlackJack API HTTPS" -Direction Inbound -LocalPort 7052 -Protocol TCP -Action Allow
+```
+
+#### 8. Запуск как служба Windows (Production)
+
+Для запуска приложения как службы Windows используйте **NSSM** (Non-Sucking Service Manager):
+
+1. Скачайте NSSM: https://nssm.cc/download
+2. Распакуйте и откройте PowerShell от имени администратора в папке nssm
+
+```powershell
+# Установка Backend как службы
+.\nssm.exe install BlackJackAPI "C:\Program Files\dotnet\dotnet.exe" "run --urls http://0.0.0.0:5052;https://0.0.0.0:7052"
+.\nssm.exe set BlackJackAPI AppDirectory "C:\path\to\Multiplayer-Blackjack-Blazor\BlackJack.API"
+.\nssm.exe set BlackJackAPI AppEnvironmentExtra ASPNETCORE_ENVIRONMENT=Production
+
+# Запуск службы
+.\nssm.exe start BlackJackAPI
+
+# Просмотр статуса
+.\nssm.exe status BlackJackAPI
+```
+
+#### Полезные команды для Windows
+
+```powershell
+# Проверка запущенных процессов .NET
+Get-Process -Name dotnet
+
+# Остановка процесса по порту
+netstat -ano | findstr :5052
+taskkill /PID <PID> /F
+
+# Проверка доступности портов
+Test-NetConnection -ComputerName localhost -Port 5052
+```
+
+---
+
 ### Общие рекомендации для Linux
 
 #### Настройка файрвола (опционально)

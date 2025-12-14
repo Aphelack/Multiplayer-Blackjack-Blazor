@@ -119,7 +119,7 @@ Multiplayer-Blackjack-Blazor/
 
 1. **Клонировать репозиторий / Clone the repository**
    ```bash
-   git clone https://github.com/Aphelack/Multiplayer-Blackjack-Blazor.git
+   git clone <repository-url>
    cd Multiplayer-Blackjack-Blazor
    ```
 
@@ -143,7 +143,7 @@ Multiplayer-Blackjack-Blazor/
    cd BlackJack.API
    dotnet run
    ```
-   API будет доступен на https://localhost:7113
+   API will be available at the port specified in console output (typically https://localhost:7xxx)
 
 5. **Запустить Frontend / Run Frontend**
    

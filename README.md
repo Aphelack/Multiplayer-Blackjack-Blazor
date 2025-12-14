@@ -1,12 +1,10 @@
 # Multiplayer BlackJack - Blazor WebAssembly Application
 
-## 📖 Описание проекта (RU) / Project Description (EN)
-
-### 🇷🇺 Русский
+## 📖 Описание проекта
 
 **Multiplayer BlackJack** - это полнофункциональная веб-реализация классической карточной игры Блэкджек с поддержкой нескольких игроков в режиме реального времени. Проект демонстрирует современную архитектуру веб-приложений с использованием .NET 8, Blazor WebAssembly и SignalR для обеспечения мгновенного взаимодействия между игроками.
 
-#### Суть проекта
+### Суть проекта
 
 Это многопользовательская онлайн-игра в Блэкджек, где:
 - Несколько игроков могут одновременно подключаться к игровой сессии
@@ -14,7 +12,7 @@
 - Все действия синхронизируются в реальном времени между всеми участниками
 - Игровое состояние сохраняется в базе данных PostgreSQL
 
-#### Основные возможности
+### Основные возможности
 
 - ✅ **Создание игровых комнат** - игроки могут создавать собственные игровые сессии
 - ✅ **Присоединение к играм** - подключение к существующим игровым комнатам
@@ -25,32 +23,9 @@
 
 ---
 
-### 🇬🇧 English
+## 🏗️ Архитектура
 
-**Multiplayer BlackJack** is a full-featured web implementation of the classic Blackjack card game with real-time multiplayer support. The project demonstrates modern web application architecture using .NET 8, Blazor WebAssembly, and SignalR for instant player interaction.
-
-#### Project Essence
-
-This is a multiplayer online Blackjack game where:
-- Multiple players can simultaneously connect to a game session
-- Players compete against the dealer, trying to reach 21 points or as close as possible
-- All actions are synchronized in real-time between all participants
-- Game state is persisted in PostgreSQL database
-
-#### Key Features
-
-- ✅ **Game Room Creation** - players can create their own game sessions
-- ✅ **Join Games** - connect to existing game rooms
-- ✅ **Real-time Gameplay** - instant synchronization of all player actions
-- ✅ **Classic Blackjack Rules** - "Hit" (take a card) and "Stand" (stop) actions
-- ✅ **Game Session Management** - tracking the state of each player
-- ✅ **Card Visualization** - graphical display of player and dealer cards
-
----
-
-## 🏗️ Архитектура / Architecture
-
-### Технологический стек / Technology Stack
+### Технологический стек
 
 #### Backend
 - **ASP.NET Core 8.0** - REST API framework
@@ -67,38 +42,38 @@ This is a multiplayer online Blackjack game where:
 #### Domain Layer
 - **Shared Entities** - Common models used by both frontend and backend
 
-### Структура проекта / Project Structure
+### Структура проекта
 
 ```
 Multiplayer-Blackjack-Blazor/
 ├── BlackJack.API/              # Backend Web API
-│   ├── Controllers/            # REST API controllers
-│   ├── Hubs/                   # SignalR hubs (GameHub)
-│   ├── Services/               # Business logic services
-│   ├── Data/                   # Database context
-│   └── Migrations/             # EF Core migrations
+│   ├── Controllers/            # REST API контроллеры
+│   ├── Hubs/                   # SignalR хабы (GameHub)
+│   ├── Services/               # Сервисы бизнес-логики
+│   ├── Data/                   # Контекст базы данных
+│   └── Migrations/             # EF Core миграции
 │
 ├── BlackJack.BlazorWasm/       # Frontend Blazor WebAssembly
-│   ├── Pages/                  # Razor pages (GameRoom, GameMenu)
-│   ├── Services/               # Client services
-│   ├── Layout/                 # Layout components
-│   └── wwwroot/                # Static files (card images)
+│   ├── Pages/                  # Razor страницы (GameRoom, GameMenu)
+│   ├── Services/               # Клиентские сервисы
+│   ├── Layout/                 # Компоненты макета
+│   └── wwwroot/                # Статические файлы (изображения карт)
 │
-└── BlackJack.Domain/           # Shared domain layer
-    ├── Entities/               # Domain entities (Player, Dealer, Card, Deck, GameSession)
-    └── Models/                 # Data transfer objects
+└── BlackJack.Domain/           # Общий доменный слой
+    ├── Entities/               # Доменные сущности (Player, Dealer, Card, Deck, GameSession)
+    └── Models/                 # Объекты передачи данных
 ```
 
-### Основные компоненты / Key Components
+### Основные компоненты
 
-#### Entities (Сущности)
+#### Сущности
 - **GameSession** - Игровая сессия с участниками и состоянием игры
 - **Player** - Игрок с картами и счетом
 - **Dealer** - Дилер, раздающий карты
 - **Card** - Карта с мастью и значением
 - **Deck** - Колода карт
 
-#### SignalR Hub Methods
+#### SignalR Hub методы
 - `CreateGame` - Создание новой игры
 - `JoinGame` - Присоединение к игре
 - `LeaveGame` - Выход из игры
@@ -107,59 +82,276 @@ Multiplayer-Blackjack-Blazor/
 
 ---
 
-## 🚀 Как запустить / How to Run
+## 🚀 Развертывание на Linux
 
-### Предварительные требования / Prerequisites
+### Предварительные требования
 
-- .NET 8.0 SDK or later
-- PostgreSQL 12+ database
-- Visual Studio 2022 or VS Code (recommended)
+- .NET 8.0 SDK или выше
+- PostgreSQL 12+ база данных
+- Git
 
-### Шаги установки / Installation Steps
+### Установка на Ubuntu
 
-1. **Клонировать репозиторий / Clone the repository**
-   ```bash
-   git clone https://github.com/Aphelack/Multiplayer-Blackjack-Blazor.git
-   cd Multiplayer-Blackjack-Blazor
-   ```
-   Or clone your fork of this repository.
+#### 1. Установка .NET 8 SDK
 
-2. **Настроить базу данных / Configure Database**
-   
-   Создайте PostgreSQL базу данных и обновите строку подключения в `BlackJack.API/appsettings.json`:
-   ```json
-   "ConnectionStrings": {
-     "DefaultConnection": "Host=localhost;Database=blackjack_db;Username=your_user;Password=your_password"
-   }
-   ```
+```bash
+# Добавление репозитория Microsoft
+wget https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
 
-3. **Применить миграции / Apply Migrations**
-   ```bash
-   cd BlackJack.API
-   dotnet ef database update
-   ```
+# Обновление списка пакетов
+sudo apt update
 
-4. **Запустить Backend / Run Backend**
-   ```bash
-   cd BlackJack.API
-   dotnet run
-   ```
-   API будет доступен на https://localhost:7052 (или проверьте вывод консоли для фактического порта)
-   
-   API will be available at https://localhost:7052 (or check console output for actual port)
+# Установка .NET SDK 8.0
+sudo apt install -y dotnet-sdk-8.0
 
-5. **Запустить Frontend / Run Frontend**
-   
-   В отдельном терминале:
-   ```bash
-   cd BlackJack.BlazorWasm
-   dotnet run
-   ```
-   Приложение откроется в браузере
+# Проверка установки
+dotnet --version
+```
+
+#### 2. Установка PostgreSQL
+
+```bash
+# Установка PostgreSQL
+sudo apt install -y postgresql postgresql-contrib
+
+# Запуск PostgreSQL
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+
+# Создание базы данных и пользователя
+sudo -u postgres psql << EOF
+CREATE DATABASE blackjack_db;
+CREATE USER blackjack_user WITH ENCRYPTED PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE blackjack_db TO blackjack_user;
+\q
+EOF
+```
+
+#### 3. Клонирование и настройка проекта
+
+```bash
+# Клонирование репозитория
+git clone https://github.com/ZINA312/Multiplayer-Blackjack-Blazor.git
+cd Multiplayer-Blackjack-Blazor
+
+# Настройка строки подключения к БД
+nano BlackJack.API/appsettings.json
+```
+
+Обновите строку подключения:
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Database=blackjack_db;Username=blackjack_user;Password=your_secure_password"
+}
+```
+
+#### 4. Применение миграций и запуск
+
+```bash
+# Восстановление зависимостей
+dotnet restore
+
+# Применение миграций базы данных
+cd BlackJack.API
+dotnet ef database update
+cd ..
+
+# Запуск Backend (в отдельном терминале)
+cd BlackJack.API
+dotnet run --urls "http://localhost:5052;https://localhost:7052"
+
+# Запуск Frontend (в другом терминале)
+cd BlackJack.BlazorWasm
+dotnet run
+```
 
 ---
 
-## 🎮 Как играть / How to Play
+### Установка на Arch Linux
+
+#### 1. Установка .NET 8 SDK
+
+```bash
+# Установка .NET SDK из официальных репозиториев
+sudo pacman -Syu
+sudo pacman -S dotnet-sdk
+
+# Проверка установки
+dotnet --version
+```
+
+#### 2. Установка PostgreSQL
+
+```bash
+# Установка PostgreSQL
+sudo pacman -S postgresql
+
+# Инициализация кластера базы данных
+sudo -u postgres initdb -D /var/lib/postgres/data
+
+# Запуск и автозапуск PostgreSQL
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+
+# Создание базы данных и пользователя
+sudo -u postgres psql << EOF
+CREATE DATABASE blackjack_db;
+CREATE USER blackjack_user WITH ENCRYPTED PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE blackjack_db TO blackjack_user;
+\q
+EOF
+```
+
+#### 3. Клонирование и настройка проекта
+
+```bash
+# Установка Git (если еще не установлен)
+sudo pacman -S git
+
+# Клонирование репозитория
+git clone https://github.com/ZINA312/Multiplayer-Blackjack-Blazor.git
+cd Multiplayer-Blackjack-Blazor
+
+# Настройка строки подключения к БД
+nano BlackJack.API/appsettings.json
+```
+
+Обновите строку подключения:
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Database=blackjack_db;Username=blackjack_user;Password=your_secure_password"
+}
+```
+
+#### 4. Применение миграций и запуск
+
+```bash
+# Восстановление зависимостей
+dotnet restore
+
+# Установка Entity Framework инструментов (если требуется)
+dotnet tool install --global dotnet-ef
+
+# Применение миграций базы данных
+cd BlackJack.API
+dotnet ef database update
+cd ..
+
+# Запуск Backend (в отдельном терминале)
+cd BlackJack.API
+dotnet run --urls "http://localhost:5052;https://localhost:7052"
+
+# Запуск Frontend (в другом терминале)
+cd BlackJack.BlazorWasm
+dotnet run
+```
+
+---
+
+### Общие рекомендации для Linux
+
+#### Настройка файрвола (опционально)
+
+Если используете UFW (Ubuntu):
+```bash
+sudo ufw allow 5052/tcp
+sudo ufw allow 7052/tcp
+sudo ufw allow 5432/tcp  # PostgreSQL
+```
+
+Если используете firewalld (некоторые дистрибутивы):
+```bash
+sudo firewall-cmd --permanent --add-port=5052/tcp
+sudo firewall-cmd --permanent --add-port=7052/tcp
+sudo firewall-cmd --permanent --add-port=5432/tcp
+sudo firewall-cmd --reload
+```
+
+#### Запуск как системный сервис (Production)
+
+Создайте файл systemd service для Backend:
+
+```bash
+sudo nano /etc/systemd/system/blackjack-api.service
+```
+
+Содержимое файла:
+```ini
+[Unit]
+Description=BlackJack API Service
+After=network.target postgresql.service
+
+[Service]
+Type=notify
+User=your_username
+WorkingDirectory=/path/to/Multiplayer-Blackjack-Blazor/BlackJack.API
+ExecStart=/usr/bin/dotnet run --urls "http://0.0.0.0:5052;https://0.0.0.0:7052"
+Restart=on-failure
+RestartSec=10
+Environment=ASPNETCORE_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Активация сервиса:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable blackjack-api
+sudo systemctl start blackjack-api
+sudo systemctl status blackjack-api
+```
+
+#### Использование Nginx как обратного прокси (опционально)
+
+Установка Nginx:
+```bash
+# Ubuntu
+sudo apt install nginx
+
+# Arch Linux
+sudo pacman -S nginx
+```
+
+Настройка:
+```bash
+sudo nano /etc/nginx/sites-available/blackjack
+```
+
+Содержимое конфигурации:
+```nginx
+server {
+    listen 80;
+    server_name your_domain.com;
+
+    location / {
+        proxy_pass http://localhost:5052;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+Активация:
+```bash
+# Ubuntu
+sudo ln -s /etc/nginx/sites-available/blackjack /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+
+# Arch Linux
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+---
+
+## 🎮 Как играть
 
 1. **Создать игру** - Укажите название игры и создайте новую игровую комнату
 2. **Пригласить игроков** - Поделитесь идентификатором игры с друзьями
@@ -170,7 +362,7 @@ Multiplayer-Blackjack-Blazor/
 
 ---
 
-## 🔧 Технические детали / Technical Details
+## 🔧 Технические детали
 
 ### SignalR Real-time Communication
 Проект использует SignalR для обеспечения двусторонней связи в реальном времени между клиентами и сервером, что позволяет мгновенно синхронизировать игровое состояние между всеми участниками.
@@ -183,12 +375,12 @@ Multiplayer-Blackjack-Blazor/
 
 ---
 
-## 📝 Лицензия / License
+## 📝 Лицензия
 
-Этот проект создан в образовательных целях / This project is created for educational purposes.
+Этот проект создан в образовательных целях.
 
 ---
 
-## 👨‍💻 Автор / Author
+## 👨‍💻 Автор
 
 [Aphelack](https://github.com/Aphelack) 
